@@ -1,0 +1,69 @@
+<nav class="subnav">
+    <app-shared-loading class="full-width padded nav" *ngIf="ChatForm.disabled" [Message]="'Loading AI response...'"></app-shared-loading>
+
+    <div class="nav" *ngIf="!ChatForm.disabled">
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled" (click)="addMessage()">Add Message</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled" (click)="systemModal = true">System Instructions</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled">Safety Settings</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Config</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Link Cache</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Tools</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Tools Config</button>
+    </div>
+</nav>
+<div class="padded">
+    <form class="clr-form" (keydown.enter)="$event.preventDefault()" [formGroup]="ChatForm">
+        <div formGroupName="Messages">
+            <clr-textarea-container *ngFor="let control of MessagesField?.controls ?? []; let i = index">
+                <textarea class="full-width" (keydown.control.enter)="sendPrompt()" clrTextarea [formControlName]="i"
+                    placeholder="Enter message to AI.">
+                </textarea>
+            </clr-textarea-container>
+        </div>
+
+    <clr-modal [(clrModalOpen)]="systemModal" [clrModalStaticBackdrop]="false">
+        <div class="modal-title">System Instructions</div>
+        <div class="modal-body">
+            <button type="button" (click)="addInstruction()" class="btn">
+                <cds-icon shape="add-text"></cds-icon> Add System Instruction
+            </button>
+            <div formGroupName="SystemInstructions" *ngIf="(SystemInstructionsField?.controls?.length ?? 0) > 0">
+                <clr-textarea-container *ngFor="let message of (SystemInstructionsField?.controls ?? []); let i = index">
+                    <textarea class="full-width" clrTextarea [formControlName]="i"
+                        placeholder="Enter an instruction for the system.">
+                    </textarea>
+                </clr-textarea-container>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="systemModal = false">Ok</button>
+        </div>
+      </clr-modal>
+    </form>
+    <button [disabled]="ChatForm.disabled" (click)="sendPrompt()" type="button" class="btn">
+        <cds-icon shape="add-text"></cds-icon> Send Message
+    </button>
+</div>
+<div class="padded">
+    <div class="card" *ngFor="let chat of Interactions">
+        <div class="card-block">
+            <div  *ngFor="let candidate of chat.response?.candidates">
+                <div class="card-text chat-message chat-message-ai whitespace-render" *ngFor="let part of candidate.content?.parts ?? []">
+                    <markdown clipboard>
+                        {{part.text}}
+                    </markdown>
+                </div>
+            </div>
+        </div>
+        <div class="card-block" *ngIf="chat.prompt?.contents">
+            <div *ngIf="chat?.prompt?.contents">
+                <div class="card-text chat-message chat-message-user whitespace-render" *ngFor="let part of ((chat.prompt?.contents?.length ?? 0) === 1 ? chat.prompt!.contents![0].parts : ((chat.prompt?.contents?.length ?? 0) > 1 ? chat.prompt!.contents![1] : {parts: []}).parts) ?? []">
+                    <span cds-text="body">{{part.text}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer" style="display: flex; align-content:end;">
+            <span cds-text="caption" class="message-card-footer-text">{{chat.date | date:'MM-dd HH:mm a'}}</span>
+        </div>
+    </div>
+</div>

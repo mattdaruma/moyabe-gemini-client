@@ -1,0 +1,134 @@
+{
+    "serviceEmdpoint": "https://generativelanguage.googleapis.com/",
+    "versionName": "v1beta",
+    "versionDisplay": "V1 Beta",
+    "resources": [
+        {
+            "name": "cachedContents",
+            "display": "Cached Contents",
+            "methods": [
+                "create",
+                "delete",
+                "get",
+                "list",
+                "patch"
+            ]
+        },
+        {
+            "name": "corpora",
+            "display": "Corpora",
+            "methods": [
+                "create",
+                "delete",
+                "get",
+                "list",
+                "patch",
+                "query"
+            ],
+            "children": [
+                {
+                    "name": "documents",
+                    "display": "Corpora Documents",
+                    "methods": [
+                        "create",
+                        "delete",
+                        "get",
+                        "list",
+                        "patch",
+                        "query"
+                    ],
+                    "children": [
+                        {
+                            "name": "chunks",
+                            "display": "Corpora Document Chunks",
+                            "methods": [
+                                "batchCreate",
+                                "batchDelete",
+                                "batchUpdate",
+                                "create",
+                                "delete",
+                                "get",
+                                "list",
+                                "patch"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "permissions",
+                    "display": "Corpora Permissions",
+                    "methods": [
+                        "create",
+                        "delete",
+                        "get",
+                        "list",
+                        "patch"
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "files",
+            "display": "Files",
+            "methods": [
+                "delete",
+                "get",
+                "list"
+            ]
+        },
+        {
+            "name": "media",
+            "display": "Media",
+            "methods": [
+                "upload"
+            ]
+        },
+        {
+            "name": "models",
+            "display": "Models",
+            "methods": [
+                "batchEmbedContents",
+                "batchEmbedText",
+                "countMessageTokens",
+                "countTextTokens",
+                "countTokens",
+                "embedContent",
+                "embedText",
+                "generateAnswer",
+                "generateContent",
+                "generateMessage",
+                "generateText",
+                "get",
+                "list",
+                "streamGenerateContent"
+            ]
+        },
+        {
+            "name": "tunedModels",
+            "display": "Tuned Models",
+            "methods": [
+                "create",
+                "delete",
+                "generateContent",
+                "generateText",
+                "get",
+                "list",
+                "patch",
+                "transferOwnership"
+            ],
+            "children": [
+                {
+                    "name": "permissions",
+                    "display": "Tuned Model Permissions",
+                    "methods": [
+                        "create",
+                        "delete",
+                        "get",
+                        "list",
+                        "patch"
+                    ]
+                }
+            ]
+        }
+    ]
+}

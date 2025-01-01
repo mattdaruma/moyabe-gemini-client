@@ -1,0 +1,20 @@
+.clr-form{
+    display: flex;
+    justify-content: center;
+}
+.label-container{
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+}
+.label-container:not(:last-child) { 
+    padding-bottom: 3px;
+ }
+ .signpost-value{
+    padding-top: 1rem;
+ }
+ .loading-bar{
+    width: 100%;
+    padding-left: .5rem;
+    padding-right: .5rem;
+ }

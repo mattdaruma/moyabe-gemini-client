@@ -1,0 +1,136 @@
+<nav class="subnav" *ngIf="(Loading$ | async) || (LastCache$ | async)">
+    <app-shared-loading class="full-width padded nav" *ngIf="Loading$ | async" [Message]="'Loading models...'"></app-shared-loading>
+    <div class="nav" *ngIf="!(Loading$ | async)">
+        <button (click)="getModels()" class="nav-item btn btn-icon btn-link"><cds-icon shape="refresh"></cds-icon></button>
+        <span class="nav-item">Cached {{LastCache$ | async | date:'MM-dd HH:mm a'}} </span>
+    </div>
+</nav>
+<div class="padded" *ngIf="!(Loading$ | async)">
+    <app-shared-error *ngIf="Error$ | async as error"
+        [Message]="'An error occured while retrieving the list of models.'" [Error]="error"></app-shared-error>
+    <form class="clr-form" (keydown.enter)="$event.preventDefault()" *ngIf="!(Error$ | async)">
+        <div class="clr-form-control">
+            <label for="basic" class="clr-control-label">Model Filter</label>
+            <div class="clr-control-container">
+                <div class="clr-input-wrapper">
+                    <input [formControl]="Filter" type="text" placeholder="Filter Models" class="clr-input" required />
+                    <cds-icon shape="filter"></cds-icon>
+                </div>
+                <span class="clr-subtext">Find specific models in the model list.</span>
+            </div>
+        </div>
+    </form>
+    <div class="clr-row" *ngIf="!(Error$ | async)">
+        <div class="clr-col-12 clr-col-sm-6 clr-col-md-6 clr-col-lg-4 clr-col-xl-3"
+            *ngFor="let model of (Models$ | async)">
+            <div class="card">
+                <div class="card-header" *ngIf="model.displayName">
+                    {{model.displayName}}
+                </div>
+                <div class="card-block">
+                    <div class="card-text" *ngIf="model.description">
+                        {{model.description}}
+                    </div>
+                    <div class="card-text">
+                        <div class="label-container" *ngIf="model.name">
+                            <clr-signpost *ngIf="model.name">
+                                <span class="label clickable" clrSignpostTrigger>
+                                    {{model.name.replace('models/', '')}}
+                                </span>
+                                <clr-signpost-content>
+                                    This is the model's resource name in the Gemini API.
+                                    <div class="signpost-value">
+                                        {{model.name}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngIf="model.version">
+                                <span clrSignpostTrigger class="label clickable">Version:
+                                    {{model.version}}</span>
+                                <clr-signpost-content>
+                                    The current version number of the model.
+                                    <div class="signpost-value">
+                                        {{model.version}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngIf="model.inputTokenLimit">
+                                <span clrSignpostTrigger
+                                    class="label label-blue clickable">Input: {{model.inputTokenLimit}}</span>
+                                <clr-signpost-content>
+                                    Maximum number of input tokens allowed for this model.
+                                    <div class="signpost-value">
+                                        {{model.inputTokenLimit}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngIf="model.outputTokenLimit">
+                                <span clrSignpostTrigger
+                                    class="label label-blue clickable">Output:
+                                    {{model.outputTokenLimit}}</span>
+                                <clr-signpost-content>
+                                    Maximum number of output tokens available for this model.
+                                    <div class="signpost-value">
+                                        {{model.outputTokenLimit}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngIf="model.temperature">
+                                <span class="label label-orange clickable"
+                                    clrSignpostTrigger>Temperature:
+                                    {{model.temperature}}</span>
+                                <clr-signpost-content>
+                                    Controls the randomness of the output. A higher value will produce responses that
+                                    are more varied, while a value closer to 0.0 will typically result in less
+                                    surprising responses from the model. This value specifies default to be used by the
+                                    backend while making the call to the model.
+                                    <div class="signpost-value">
+                                        {{model.temperature}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngIf="model.topK">
+                                <span clrSignpostTrigger class="label label-light-blue clickable">Top
+                                    K: {{model.topK}}</span>
+                                <clr-signpost-content>
+                                    Top-k sampling considers the set of topK most probable tokens. This value specifies
+                                    default to be used by the backend while making the call to the model. If empty,
+                                    indicates the model doesn't use top-k sampling, and topK isn't allowed as a
+                                    generation parameter.
+                                    <div class="signpost-value">
+                                        {{model.topK}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngIf="model.topP">
+                                <span class="label label-light-blue clickable" clrSignpostTrigger>Top
+                                    P: {{model.topP}}</span>
+                                <clr-signpost-content>
+                                    Nucleus sampling considers the smallest set of tokens whose probability sum is at
+                                    least topP. This value specifies default to be used by the backend while making the
+                                    call to the model.
+                                    <div class="signpost-value">
+                                        {{model.topP}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                            <clr-signpost *ngFor="let method of model.supportedGenerationMethods">
+                                <span class="label label-purple clickable" clrSignpostTrigger>{{method}}</span>
+                                <clr-signpost-content>
+                                    The model's supported generation methods.
+                                    <div class="signpost-value">
+                                        {{method}}
+                                    </div>
+                                </clr-signpost-content>
+                            </clr-signpost>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-sm btn-link" [routerLink]="['/', 'model', 'chat', model.name.replace('models/', '')]">Chat</button>
+                    <button class="btn btn-sm btn-link">Stream</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

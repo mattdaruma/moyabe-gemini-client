@@ -1,0 +1,20 @@
+<clr-alert [clrAlertType]="'danger'" [clrAlertClosable]="false" [clrAlertAppLevel]="true">
+    <clr-alert-item>
+        <span class="alert-text">{{Message ?? 'An error has occurred.'}}</span>
+        <div class="alert-actions">
+            <button (click)="modalOpen = true" class="btn alert-action">Show Error</button>
+        </div>
+    </clr-alert-item>
+</clr-alert>
+<clr-modal [(clrModalOpen)]="modalOpen">
+    <h3 class="modal-title">Error Details</h3>
+    <div class="modal-body">
+        <div class="json-container" *ngIf="Error">
+            <ngx-json-viewer [json]="Error"></ngx-json-viewer>
+        </div>
+        <span *ngIf="!Error">No error details were provided.</span>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modalOpen = false">Ok</button>
+    </div>
+</clr-modal>

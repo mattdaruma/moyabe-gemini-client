@@ -1,0 +1,29 @@
+
+<table class="table">
+    <thead>
+        <tr *ngIf="Data && Data.length > 0">
+            <th>
+                <cds-icon shape="detail-expand"></cds-icon>
+            </th>
+            <th *ngFor="let col of Columns">{{col.display}}</th>
+        </tr>
+        <tr *ngIf="!Data || Data.length === 0">
+            <th>Empty Table</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let d of Data">
+            <td>
+                <button class="btn btn-link" [routerLink]="d['routerLink']">
+                    <cds-icon shape="detail-expand"></cds-icon>
+                </button>
+            </td>
+            <td *ngFor="let col of Columns">
+                {{d[col.key]}}
+            </td>
+        </tr>
+        <tr *ngIf="Data.length === 0 || !Data">
+            <td>The dataset provided was empty.</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,16 @@
+.copy-button-notification, .copy-button-icon {
+    transition: opacity .3s linear;
+}
+.copy-button-icon {
+    opacity: 1;
+}
+.copy-button-icon-fade {
+    opacity: 0
+}
+.copy-button-notification {
+    opacity: 0;
+    position: absolute;
+}
+.copy-button-notification-show{
+    opacity: 1
+}

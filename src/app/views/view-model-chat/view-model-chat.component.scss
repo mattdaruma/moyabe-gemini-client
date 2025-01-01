@@ -1,0 +1,24 @@
+textarea{
+    width:100%;
+}
+clr-textarea-container{
+    margin-top: 0;
+    width: 100%;
+}
+.chat-speaker-label{
+    padding-top: .5rem
+}
+.chat-message-user, .user-label{
+    text-align: right;
+}
+.message-card-footer-text{
+    width: 100%;
+    text-align: right;
+}
+.card-block:first-child{
+    padding-top: 0;
+}
+
+.card:first-child{
+    margin-top: 0;
+}

@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+.whitespace-render{
+    white-space: pre-wrap
+}
+.full-width{
+    width: 100%;
+}
+.padded {
+    padding: .5rem;
+}
+.pointer{
+    cursor: pointer;
+}
+.signpost-content-header{
+    @extend .btn !optional;
+}

@@ -1,0 +1,32 @@
+<div class="method-view-container" *ngIf="viewData">
+    <div class="resource-children-container" *ngIf="resource?.children">
+        <h5>Children</h5>
+        <div class="resource-children-buttons">
+            <button type="button" class="btn btn-primary" *ngFor="let res of resource?.children">{{res.display}}</button>
+        </div>
+    </div>
+    <div class="resource-methods-container">
+        <h5>Methods</h5>
+        <div class="resource-method-buttons">
+            <button type="button" class="btn" *ngFor="let method of resource?.methods">{{method}}</button>
+        </div>
+    </div>
+    <div class="get-view-container">
+        <h5>{{viewData.displayName ?? 'View'}}</h5>
+        <div class="get-json-viewer-container">
+            <ngx-json-viewer [json]="viewData"></ngx-json-viewer>
+        </div>
+    </div>
+</div>
+<div *ngIf="errorMessage">
+    <h3>
+        <cds-icon shape="error-standard" status="danger" solid="true" size="lg"></cds-icon> Error Retrieving Details
+    </h3>
+    <div class="whitespace-render">
+        {{errorMessage}}
+    </div>
+</div>
+<div *ngIf="!viewData && !errorMessage">
+    <clr-spinner clrInline></clr-spinner>
+    <span>Loading details...</span>
+</div>

@@ -1,0 +1,45 @@
+<clr-main-container>
+  <clr-header>
+    <div class="branding">
+      <span class="nav-link pointer" [routerLink]="['/']">
+        <cds-icon shape="cpu"></cds-icon>
+        <span>MoYaBe Gemini Client</span>
+      </span>
+    </div>
+    <div class="header-nav">
+      <span class="nav-link">{{config.data.versionDisplay }}</span>
+      <span class="nav-link">
+        <cds-icon *ngIf="!(api.ValidKey$ | async)" [routerLink]="['/']" style="cursor:pointer" shape="key" badge="warning-triangle"></cds-icon>
+        <cds-icon *ngIf="api.ValidKey$ | async" shape="key" badge="success"></cds-icon>
+      </span>
+      <span class="nav-link" *ngIf="!(api.ValidKey$ | async)">
+        <input [formControl]="apiKeyInput" (keydown.enter)="checkKey()" type="password" placeholder="Enter API Key" class="clr-input" required />
+      </span>
+    </div>
+    <div class="header-actions">
+      <clr-dropdown class="nav-link">
+        <button class="btn btn-link" clrDropdownTrigger > <!--[disabled]="!(api.ValidKey$ | async)"-->
+          Resources
+          <cds-icon shape="angle" direction="down"></cds-icon>
+        </button>
+        <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
+          <ng-container *ngFor="let resource of config.data.resources">
+            <button clrDropdownItem [routerLink]="['/',resource.name.replace('s', ''), 'list']">{{resource.display}}</button>
+          </ng-container>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+
+    </div>
+  </clr-header>
+
+  <!-- <nav class="subnav">
+    <ul class="nav">
+      <li class="nav-item">
+        <a class="nav-link active" [routerLink]="['/','setup']" aria-current="page">Setup</a>
+      </li>
+    </ul>
+  </nav> -->
+
+  <router-outlet />
+
+</clr-main-container>

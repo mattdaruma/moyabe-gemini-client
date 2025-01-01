@@ -1,0 +1,7 @@
+
+<div class="code-button-bar">
+    <button [disabled]="justCopied" class="btn btn-icon copy-button" (click)="copyCode($event)">
+        <cds-icon [ngClass]="{'copy-button-icon': true, 'copy-button-icon-fade': justCopied}" shape="clipboard"></cds-icon>
+        <cds-icon [ngClass]="{'copy-button-notification': true, 'copy-button-notification-show': justCopied}" shape="check" status="success"></cds-icon>
+    </button>
+</div>

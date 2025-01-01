@@ -1,0 +1,42 @@
+<div class="method-list-container">
+    <div *ngIf="!data && !errorMessage">
+        <clr-spinner clrInline></clr-spinner>
+        <span>Loading list data...</span>
+    </div>
+    <table class="table" *ngIf="!errorMessage && columns && (data?.length ?? 0) > 0">
+        <thead>
+            <tr>
+                <th [colSpan]="columns!.length + 1">{{resourceName}}</th>
+            </tr>
+            <tr>
+                <th>
+                    <cds-icon shape="detail-expand"></cds-icon>
+                </th>
+                <th *ngFor="let col of columns">{{col}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of data">
+                <td>
+                    <button class="btn btn-link" [routerLink]="'/get/'+d['name']">
+                        <cds-icon shape="detail-expand"></cds-icon>
+                    </button>
+                </td>
+                <td *ngFor="let col of columns">
+                    {{d[col]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div *ngIf="!errorMessage && (data?.length ?? -1) === 0">
+        No data returned.
+    </div>
+    <div *ngIf="errorMessage">
+        <h3>
+            <cds-icon shape="error-standard" status="danger" solid="true" size="lg"></cds-icon> Error Retrieving List
+        </h3>
+        <div class="whitespace-render">
+            {{errorMessage}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,7 @@
+
+<app-shared-loading *ngIf="loading$ | async" [Message]="'Loading models...'"></app-shared-loading>
+<ng-container *ngIf="!(loading$ | async)">
+    <app-shared-error *ngIf="error$ | async as error" [Message]="'An error occured retrieving the list of models.'"
+    [Error]="error"></app-shared-error>
+    <app-shared-table *ngIf="models$ | async as models" [Columns]="columns" [Data]="models"></app-shared-table>
+</ng-container>
