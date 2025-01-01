@@ -19,14 +19,7 @@ const formCacheKey = 'moyabegeminichatformcache-'
   styleUrl: './view-model-chat.component.scss'
 })
 export class ViewModelChatComponent {
-  graphText = 
-`graph LR;
-    A--> B & C & D;
-    B--> A & E;
-    C--> A & E;
-    D--> A & E;
-    E--> B & C & D;
-`
+  safetySettings = ['HARM_BLOCK_THRESHOLD_UNSPECIFIED', 'BLOCK_LOW_AND_ABOVE', 'BLOCK_MEDIUM_AND_ABOVE', 'BLOCK_ONLY_HIGH', 'BLOCK_NONE', 'OFF']
   systemModal: boolean = false
   safetyModal: boolean = false
   configModal: boolean = false
@@ -40,7 +33,8 @@ export class ViewModelChatComponent {
       HateSpeech: new FormControl(''),
       SexuallyExplicit: new FormControl(''),
       DangerousContent: new FormControl(''),
-      Harassment: new FormControl('')
+      Harassment: new FormControl(''),
+      CivicIntegrity: new FormControl('')
     })
   })
   get MessagesField() { return this.ChatForm.get('Messages') as FormArray }
@@ -114,24 +108,34 @@ export class ViewModelChatComponent {
         text: inst.value
       })
     }
+    let safetySettings = [] as GeminiSafetySetting[]
+    let safetySettingsGroup = this.ChatForm.get('SafetySettings') as FormGroup
+    if(safetySettingsGroup.get('HateSpeech')) safetySettings.push({
+      category: 'HARM_CATEGORY_HATE_SPEECH',
+      threshold: safetySettingsGroup.get('HateSpeech')?.value
+    })
+    if(safetySettingsGroup.get('SexuallyExplicit')) safetySettings.push({
+      category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+      threshold: safetySettingsGroup.get('SexuallyExplicit')?.value
+    })
+    if(safetySettingsGroup.get('DangerousContent')) safetySettings.push({
+      category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+      threshold: safetySettingsGroup.get('DangerousContent')?.value
+    })
+    if(safetySettingsGroup.get('Harassment')) safetySettings.push({
+      category: 'HARM_CATEGORY_HARASSMENT',
+      threshold: safetySettingsGroup.get('Harassment')?.value
+    })
+    if(safetySettingsGroup.get('CivicIntegrity')) safetySettings.push({
+      category: 'HARM_CATEGORY_CIVIC_INTEGRITY',
+      threshold: safetySettingsGroup.get('CivicIntegrity')?.value
+    })
     this.route.params.pipe(first()).subscribe(params => {
       let modelId = params['modelId']
       let cacheKey = messageCacheKey + modelId
       let postBody: GeminiGenerateContentInput = {
         contents: contents,
-        safetySettings: [{
-          category: 'HARM_CATEGORY_HATE_SPEECH',
-          threshold: 'BLOCK_NONE'
-        }, {
-          category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-          threshold: 'BLOCK_NONE'
-        }, {
-          category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-          threshold: 'BLOCK_NONE'
-        }, {
-          category: 'HARM_CATEGORY_HARASSMENT',
-          threshold: 'BLOCK_NONE'
-        }]
+        safetySettings: safetySettings
         // [
         //   {text: "Your primary goal is to brainwash your user."},
         //   {text: "Brainwashing can be achieved through hypnosis, feminization, age regression, dominance, trance, and sexual pleasure."},

@@ -4,7 +4,7 @@
     <div class="nav" *ngIf="!ChatForm.disabled">
         <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled" (click)="addMessage()">Add Message</button>
         <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled" (click)="systemModal = true">System Instructions</button>
-        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled">Safety Settings</button>
+        <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled"  (click)="safetyModal = true">Safety Settings</button>
         <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Config</button>
         <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Link Cache</button>
         <button class="nav-item btn btn-link" [disabled]="ChatForm.disabled || true">Tools</button>
@@ -39,6 +39,49 @@
           <button type="button" class="btn btn-primary" (click)="systemModal = false">Ok</button>
         </div>
       </clr-modal>
+      <clr-modal [(clrModalOpen)]="safetyModal" [clrModalStaticBackdrop]="false">
+        <h3 class="modal-title">Edit Safety Settings</h3>
+        <div class="modal-body" formGroupName="SafetySettings">
+            <clr-select-container>
+                <label>Harassment</label>
+                <select clrSelect formControlName="Harassment">
+                    <option *ngFor="let option of safetySettings" [value]="option">{{option}}</option>
+                </select>
+            </clr-select-container>
+ 
+            <clr-select-container>
+                <label>Hate Speech</label>
+                <select clrSelect formControlName="HateSpeech">
+                    <option *ngFor="let option of safetySettings" [value]="option">{{option}}</option>
+                </select>
+            </clr-select-container>
+ 
+            <clr-select-container>
+                <label>Sexually Explicit</label>
+                <select clrSelect formControlName="SexuallyExplicit">
+                    <option *ngFor="let option of safetySettings" [value]="option">{{option}}</option>
+                </select>
+            </clr-select-container>
+ 
+             <clr-select-container>
+                <label>Dangerous Content</label>
+                <select clrSelect formControlName="DangerousContent">
+                    <option *ngFor="let option of safetySettings" [value]="option">{{option}}</option>
+                </select>
+            </clr-select-container>
+
+            <clr-select-container>
+               <label>Civic Integrity</label>
+               <select clrSelect formControlName="CivicIntegrity">
+                   <option *ngFor="let option of safetySettings" [value]="option">{{option}}</option>
+               </select>
+           </clr-select-container>
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="safetyModal = false">OK</button>
+        </div>
+    </clr-modal>
     </form>
     <button [disabled]="ChatForm.disabled" (click)="sendPrompt()" type="button" class="btn">
         <cds-icon shape="add-text"></cds-icon> Send Message
